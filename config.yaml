@@ -1,0 +1,118 @@
+# permissions:
+# - Allows player to use the /quests command: HEXPLOIT.Quests:commands.quest
+
+
+MongoDB:
+    connection_string: mongodb://localhost:27017
+    database_name: Unturned
+    collection_name: Players
+
+
+# Available parameters for the quest
+# - int id | quest id (1-50)             ( REQUIRED !!!!!!!!!!!!)
+# - string name | quest name                ( REQUIRED !!!!!!!!!!!!!)
+# - string description | quest description        ( REQUIRED !!!!!!!!!!!!!!!)
+# - List of strings reward_ids | quest reward item list. It contains item ids 
+# - unsigned int reward_exp | amount of experience that will be given to player as reward
+# - int reward_profile_xp | amount of profile experience (is needed to raise level) that will be given to player as reward
+# - string (Enum) condition | quest condition            ( REQUIRED !!!!!!!!!!!!)
+# - boolean onlyMegaZombie | Additional attributes for a quest that will only consider mega zombies. Only applies if the quest type is set to "Zombies_kill"
+# - boolean onlyHeadshots | Additional attributes for a quest that will only consider headshots damage. Only applies if the quest type is set to "Damaging"
+# - boolean playersOnly | Additional attributes for a quest that will only consider player damage. Only applies if the quest type is set to "Damaging"
+# - int condition_amount | this parameter specifies how many times quest condition must be repeated to fulfill it           ( REQUIRED !!!!!!!!!!!!)
+# - int condition_item_id | Additional attributes for a quest that will only consider a certain type of item (its id). 
+#            Only applies if the quest type is set to "Pickup_items", "Item_crafting" or "Harvesting"  (set -1 to disable)
+# - boolean onlyZombie | Additional attributes for a quest that will only consider zombie damage. Only applies if the quest type is set to "Damaging" 
+# - boolean isDaily | Additional attribute for a quest which will reset quest progress 24 hours after the quest has been completed 
+# - List of strings reward_commands | commands that will be executed after receiving quest reward 
+Quests:
+    1:
+        name: Quest - 1
+        description: Kill 5 zombie
+        reward_items:
+          - 16
+          - 15:3
+          - 253
+        reward_experience: 500
+        reward_profile_exp: 200
+        Condition: Zombies_kill
+        onlyMega: false 
+        Condition_amount: 5
+    2:
+        name: Quest - 2
+        description: Pickup 3 items
+        reward_items:
+          - 15
+          - 81
+          - 8
+        reward_experience: 500
+        reward_profile_exp: 200
+        Condition: Pickup_items
+        Condition_amount: 3
+        Condition_item_id: -1 # set to -1 if irrelevant
+        isDaily: true
+    3:
+        name: Quest - 3
+        description: Kill 2 players
+        reward_items:
+          - 17
+        reward_experience: 500
+        reward_profile_exp: 300
+        Condition: Players_kill
+        Condition_amount: 2
+    4:
+        name: Quest - 4
+        description: Fell 1 tree
+        reward_items:
+          - 490
+        reward_experience: 500
+        reward_profile_exp: 400
+        Condition: Tree_felling
+        Condition_amount: 1
+    5:
+        name: Quest - 5
+        description: Harvest 5 crops
+        reward_items:
+          - 340:5
+        reward_experience: 500
+        reward_profile_exp: 200
+        Condition: Harvesting
+        Condition_amount: 5
+    6:
+        name: Quest - 6
+        description: Craft 4 items
+        reward_items:
+          - 91:4
+        reward_experience: 500
+        reward_profile_exp: 300
+        Condition: Item_crafting
+        Condition_amount: 4
+    7:
+        name: Quest - 7
+        description: Give 500 damage
+        reward_items:
+          - 363
+          - 17
+        reward_experience: 500
+        reward_profile_exp: 150
+        Condition: Damaging
+        Condition_amount: 500
+Rewards:
+    1:
+        commands: 
+          - giveto {targetPlayer} 363 1 # {targetPlayer} - is player for whom command will be executed
+    2:
+        commands: 
+          - giveto {targetPlayer} 253 1
+Messages:
+    defaultColor: fff # Hex color without "#" char
+    IconUrl: https://ibb.co/KxPwg0g
+    PlayerQuestCompleted:
+        color: fff # Hex color without "#" char
+        text: You've completed quest {quest_name} | {quest_description} # {quest_name} and {quest_description} its a placeholders that will show player quest name and quest description
+    QuestsNotFound:
+        color: FF0000
+        text: No registered quests found on the server
+    PlayerLevelUp:
+        color: 62FF00
+        text: Your level is raise to {level} # {level} - Its a placeholder that will show player what level his risen to
